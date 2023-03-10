@@ -21,8 +21,8 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      buyer: {
-        type: Sequelize.STRING,
+      cstomerId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       status: {

@@ -16,10 +16,7 @@ module.exports = {
       sumprice: {
         type: Sequelize.INTEGER
       },
-      buyer: {
-        type: Sequelize.STRING
-      },
-      customers: {
+      customerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
