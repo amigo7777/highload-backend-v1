@@ -6,7 +6,7 @@ from urllib.parse import urlparse, parse_qs
 from cursor import Database
 
 cur = Database()
-tables = ["tovars","orders","cart","customers"]
+tables = ["tovars", "orders", "cart", "customers"]
 
 #создает JSON из ответа sql
 #да, криво и много, будет желание и силы перепишим
@@ -79,7 +79,7 @@ class MyServer(BaseHTTPRequestHandler):
         query = parsed_url.query
         if table == "tovars":
             #если будет требвать айдишник то тут получаем максимальный и +1
-            #id = int(cur.execute_query(f"SELECT MAX(id) from {table}")) + 1
+            # id = int(cur.execute_query(f"SELECT MAX(id) from {table}")) + 1
             name = query.get('name', [''])[0]
             price = query.get('price', [''])[0]
             amount = query.get('amount', [''])[0]

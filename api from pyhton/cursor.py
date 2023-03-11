@@ -4,9 +4,9 @@ class Database:
     def __init__(self):
         try:
             self.connection = psycopg2.connect(
-                dbname="laba",
+                dbname="dns",
                 user="postgres",
-                password="12345qwe",
+                password="27072001qw",
                 host="localhost",
                 # port=self.port
             )

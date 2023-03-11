@@ -61,16 +61,75 @@ app.post('/customers', async (req, res) =>{
 })
 
 app.post('/orders', async (req, res) => {
-    const {customerUuid, spisok, sum_price, orders_date, status} = req.body
+    const {/*customerUuid,*/ orders_date, status, cartId} = req.body
 
     try {
-        const customer = await customers.findOne({where: {uuid: customerUuid}})
+        const cart = await carts.findOne({where: {id: cartId}})
+        
+        // const customer = await customers.findOne({where: {uuid: customerUuid}})
 
-        const order = await orders.create({cstomerId: customer.id, spisok, sum_price, orders_date, status})
+        const order = await orders.create({cstomerId: cart.customerId, cartId: cart.id, spisok: cart.list, sum_price: cart.sumprice, orders_date, status})
 
         return res.json(order)
     } catch(err){
         console.log(err)
+    }
+})
+
+app.get('/orders/:id', async (req,res) =>{
+    const id = req.params.id
+
+    try{
+        const order = await orders.findOne({
+            where: {id},
+            include: customers // добавление информации о пользователе
+        })
+
+        return res.json(order)
+    }catch (err) {
+        console.log(err)
+
+        return res.status(500).json({error: 'Error: server guru meditation'})
+    }
+})
+
+app.get('/orders', async (req,res) =>{
+    
+    try{
+        const order = await orders.findAll({})
+
+        return res.json(order)
+    }catch (err) {
+        console.log(err)
+
+        return res.status(500).json({error: 'Error: server guru meditation'})
+    }
+})
+
+app.post('/cart', async(req, res)=> {
+    const {list, sumprice, customerUuid} = req.body
+
+    try{
+        const customer = await customers.findOne({where: {uuid: customerUuid}})
+
+        const cart = await carts.create({customerId: customer.id, list, sumprice})
+
+        return res.json(cart)
+    } catch(err){
+        console.log(err)
+        return res.status(500).json(err)
+    }
+})
+
+app.get('/cart', async (req,res) =>{
+    try{
+        const cart = await carts.findAll()
+
+        return res.json(cart)
+    }catch (err) {
+        console.log(err)
+
+        return res.status(500).json({error: 'Error: server guru meditation'})
     }
 })
 

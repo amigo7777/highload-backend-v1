@@ -9,9 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({customers}) {
+    static associate({customers, carts}) {
       // define association here
       this.belongsTo(customers, {foreignKey: 'cstomerId'})
+      this.belongsTo(carts, {foreignKey: 'cartId'})
     }
 
     toJSON(){
@@ -30,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.DATE, // это просто чтобы развязать руки
+    },
+    cartId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     cstomerId: {
       type: DataTypes.INTEGER,

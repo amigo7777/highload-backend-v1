@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      cartId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       sum_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
