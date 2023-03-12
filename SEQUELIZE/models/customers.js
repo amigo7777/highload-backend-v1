@@ -22,11 +22,19 @@ module.exports = (sequelize, DataTypes) => {
   customers.init({
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'У пользователя должно быть имя'},
+        notEmpty: {msg: 'Имя пользователя не может быть пустым'}
+      }
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'У пользователя должен быть пароль'},
+        notEmpty: {msg: 'Пароль пользователя не может быть пустым'}
+      }
     },
     uuid: {
       type: DataTypes.UUID,
