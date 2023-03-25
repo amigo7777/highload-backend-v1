@@ -76,24 +76,30 @@ class MyServer(BaseHTTPRequestHandler):
         # Разбор URL-адреса и получение параметров запроса
         parsed_url = urlparse(self.path)
         table = parsed_url.path[1:]
+        print(f"table: {table}")
         query = parsed_url.query
         if table == "tovars":
+            params = parse_qs(query)
             #если будет требвать айдишник то тут получаем максимальный и +1
             # id = int(cur.execute_query(f"SELECT MAX(id) from {table}")) + 1
-            name = query.get('name', [''])[0]
-            price = query.get('price', [''])[0]
-            amount = query.get('amount', [''])[0]
+            name = str(params.get('name', [''])[0])
+            print(f"name: {name}")
+            price = str(params.get('price', [''])[0])
+            print(f"price: {price}")
+            amount = int(params.get('amount', [''])[0])
+            print(f"amount: {amount}")
             #чето я не придумал как будет id подтягиваться поэтому как нибудь сами
             # Выполнение SQL-запроса
             sql = (f"INSERT INTO {table} (name, price, amount) VALUES"
                    f" ({name}, {price}, {amount})")
         elif table == "cart":
+            params = parse_qs(query)
             #пихать весь список целиком в юрл
             # если будет требвать айдишник то тут получаем максимальный и +1
             # id = int(cur.execute_query(f"SELECT MAX(id) from {table}")) + 1
-            list = query.get('list', [''])[0]
-            sumprice = query.get('sumprice', [''])[0]
-            buyer = query.get('buyer', [''])[0]
+            list = params.get('list', [''])[0]
+            sumprice = params.get('sumprice', [''])[0]
+            buyer = params.get('buyer', [''])[0]
             # чето я не придумал как будет id подтягиваться поэтому как нибудь сами
             # Выполнение SQL-запроса
             sql = (f"INSERT INTO {table} (list, sumprice, buyer) VALUES"
