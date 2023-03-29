@@ -30,12 +30,12 @@ app.get('/catalog', async (req,res) =>{
     }
 })
 
-app.get('/tovars/:id/:name', async (req,res) =>{
-    const name = req.params.name
+app.get('/tovars/:id', async (req,res) =>{
+    // const name = req.params.name
     const id = req.params.id
     try{
         const tovar = await tovars.findOne({
-            where: {name, id}
+            where: {id}
         })
 
         return res.json(tovar)
@@ -66,11 +66,18 @@ app.put('/tovars/:id', async (req,res) =>{
     const {name, price, amount} = req.body
     try{
         const tovar = await tovars.findOne({ where: {id} })
-        
+
+        if(name == null){
+            tovar.price = price
+            tovar.amount = amount
+        } else if(name == null || price == null){
+            tovar.amount = amount
+        } 
+        else {
         tovar.name = name
         tovar.price = price
         tovar.amount = amount
-
+        }
         await tovar.save()
         return res.json(tovar)
     }catch (err) {
@@ -165,11 +172,11 @@ app.put('/orders/:id/status', async (req,res) =>{
 
 //добавление товара в корзину по его идентификатору
 app.post('/cart', async(req, res)=> {
-    const {/*list,*/ sumprice, customerUuid, tovarid} = req.body
-    // const id = req.params.id
+    const {/*list,*/ sumprice, customerid, tovarid} = req.body
+    // const customerid = req.params.id
 
     try{
-        const customer = await customers.findOne({where: {uuid: customerUuid}})
+        const customer = await customers.findOne({where: {id: customerid}})
 
         const tovar = await tovars.findOne({ where: {id: tovarid},})
 
